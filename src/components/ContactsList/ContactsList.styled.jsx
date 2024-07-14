@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const ContactsItem = styled.li`
   display: flex;
+  justify-content: space-between;
   margin-bottom: 8px;
 `;
 
