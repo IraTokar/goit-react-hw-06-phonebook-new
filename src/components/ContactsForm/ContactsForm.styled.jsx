@@ -5,6 +5,7 @@ export const FormContact = styled(Form)`
   display: flex;
   flex-direction: column;
   gap: 8px;
+  width: 370px;
 `;
 
 export const FormField = styled(Field)`

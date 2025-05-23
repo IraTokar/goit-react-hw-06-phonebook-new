@@ -7,10 +7,11 @@ import { nanoid } from 'nanoid';
 const storageKey = 'contacts';
 
 const phoneContacts = [
-      { id: 'id-1', name: 'Albus Dumbledore', number: '459-12-56' },
-      { id: 'id-2', name: 'Severus Snape', number: '443-89-12' },
-      { id: 'id-3', name: 'Minerva McGonagall', number: '645-17-79' },
-      { id: 'id-4', name: 'Remus Lupin', number: '227-91-26' },]
+  { id: 'id-1', name: 'Albus Dumbledore', number: '3801826499' },
+  { id: 'id-2', name: 'Severus Snape', number: '+380974155597' },
+  { id: 'id-3', name: 'Minerva McGonagall', number: '+393296436625' },
+  { id: 'id-4', name: 'Remus Lupin', number: '3339503124' },
+]
 
 export const App = () => {
   const [contacts, setContacts] = useState(()=>{return JSON.parse(window.localStorage.getItem(storageKey)) ?? phoneContacts});

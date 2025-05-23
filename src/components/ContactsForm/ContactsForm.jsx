@@ -7,7 +7,7 @@ import {FormContact, MessageError, FormField, Button} from './ContactsForm.style
 
 const quizSchema = Yup.object().shape({
     name: Yup.string().min(3, 'Too Short!').required('Required'),
-    number: Yup.string().matches(/^[1-5]\d{9}$/, {message: "Please enter valid number.", excludeEmptyString: false}).required('Required'),
+    number: Yup.string().matches(/^\+?[0-9]{10,15}$/, {message: "Please enter a valid phone number with 10 to 15 digits. You may include a leading '+' for international format.", excludeEmptyString: false}).required('Required'),
 });
 
 const ContactForm = ({ onAdd }) => {
