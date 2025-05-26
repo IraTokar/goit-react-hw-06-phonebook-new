@@ -1,80 +1,79 @@
-import React from 'react';
-import * as Yup from 'yup';
-import {Formik} from 'formik';  
-import {FormContact, MessageError, FormField, Button} from './ContactsForm.styled';
+import React, { useState } from 'react';
+import {Form, Input, Button} from './ContactsForm.styled';
+import { nanoid } from '@reduxjs/toolkit';
+import { useDispatch, useSelector } from 'react-redux';
+import { getVisibleContacts } from '../../redux/selectors';
+import { addContacts } from '../../redux/contactsSlice';
 
+const nameId = nanoid();
+const numberId = nanoid();
 
+const ContactForm = () => {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
-const quizSchema = Yup.object().shape({
-    name: Yup.string().min(3, 'Too Short!').required('Required'),
-    number: Yup.string().matches(/^\+?[0-9]{10,15}$/, {message: "Please enter a valid phone number with 10 to 15 digits. You may include a leading '+' for international format.", excludeEmptyString: false}).required('Required'),
-});
+  const contacts = useSelector(getVisibleContacts);
+  const dispath = useDispatch();
 
-const ContactForm = ({ onAdd }) => {
-  return (
-    <Formik
-      initialValues={{
-        name: '',
-        number: '',
-        }}
-       
-      validationSchema={quizSchema}
-      onSubmit={(values, actions) => {
-          onAdd(values);
-          actions.resetForm();
-     }}
-      >
+  const handleSubmit = evt => {
+    evt.preventDefault();
 
-      <FormContact>
-        <label htmlFor="name">Name</label>
-            <FormField type="text" name="name" />
-            <MessageError name="name" component="span" />
-              
-
-        <label htmlFor="number">Number</label>
-            <FormField name="number" />
-            <MessageError name="number" component="span" />
-
-        <Button type="submit">Add contact</Button>
-      </FormContact>
-    </Formik>
-  );
-};
-
-
-
-
-// class ContactForm extends Component {
-//     state = {
-//     name: ''
-//     };
+    const anExistingContact = contacts.some(contact => contact.name.toLowerCase().trim() === name.toLowerCase().trim());
+  
+    if (anExistingContact) {
+      alert(`${name} is already in contacts`);
+      return;
+    }
     
-//     nameInputId = nanoid();
+    dispath(addContacts({ name, number }));
+    setName('');
+    setNumber('');
+  };
 
-//     onSubmit = evt => {
-//         evt.preventDefault();
+  const handleChange = evt => {
+    const { name, value } = evt.target;
 
-//         this.props.onSubmit({name:this.state.name})
+    switch (name) {
+      case 'name':
+        setName(value);
+        break;
+      case 'number':
+        setNumber(value);
+        break;
+      default:
+        return;
+    }
+  }
 
-//     }
+  return (
+    <Form onSubmit = {handleSubmit}>
+    <label htmlFor={nameId}>Name</label>
+      <Input
+        type="text"
+        name="name"
+        value={name}
+        onChange={handleChange}
+        pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+        title="Name may contain only letters, apostrophe, dash and spaces."
+        required />
+    
 
-//     onChange = evt => {
-//         const { name, value } = evt.target;
+    <label htmlFor={numberId}>Number</label>
+      <Input
+        type='tel'
+        name="number"
+        value={number}
+        onChange={handleChange}
+        pattern="^\+?[0-9\s\-\(\)]{7,20}$"
+        title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+        required />
 
-//         this.setState({[name]: value});
-//     }
+      <Button type="submit">Add contact</Button>
+    
 
-//   render() {
-//     return (
-//         <div>
-//             <form onSubmit={this.onSubmit}>
-//                 <label key={this.nameInputId}>Name</label> 
-//                 <input type="text" name="name" value={this.state.name} onChange={this.onChange} required /> 
-//                 <button type='submit'>Add contact</button>
-//             </form>        
-//       </div>
-//     )
-//   }
-// };
+  </Form>
+  )
+
+} 
 
 export default ContactForm;
