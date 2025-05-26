@@ -9,7 +9,7 @@ const filterInputId = nanoid()
 
 const Filter = () => {
     const value = useSelector(getFilter);
-    const dispatch = useDispatch;
+    const dispatch = useDispatch();
 
     const onChange = evt => {
         const normalizedValue = evt.target.value.toLowerCase();
