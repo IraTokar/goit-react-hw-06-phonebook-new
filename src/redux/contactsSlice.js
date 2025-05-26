@@ -20,18 +20,21 @@ const contactSlice = createSlice({
             reducer(state, action) {
                 state.items.push(action.payload);
             },
-        },
-        prepare(newContact) {
-            return {
-                payload: { id: nanoid(), ...newContact }
-            };
+    
+            prepare(newContact) {
+                return {
+                    payload: { id: nanoid(), ...newContact }
+                };
+            }
         },
         removeContact(state, action) {
             const index = state.items.findIndex(
                 contact => contact.id === action.payload
-              );
+            );
+            
+            if (index !== -1){
               state.items.splice(index, 1);
-        },
+        }},
     },
 
 });

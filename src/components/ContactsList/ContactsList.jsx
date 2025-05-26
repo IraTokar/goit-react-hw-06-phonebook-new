@@ -8,18 +8,16 @@ const ContactList = () => {
     const contacts = useSelector(getVisibleContacts);
     const dispatch = useDispatch();
 
-    const handleDelete = () => dispatch(removeContact());
-
     return (
         <div>
             <ul>
-                {contacts && contacts.map(contact => (
+                {contacts && contacts.map((contact) => (
                     <ContactsItem key={contact.id}>
                         {contact.name + ': ' + contact.number}
                         {<Button
                             type='button'
                             name='delete'
-                            onClick={handleDelete}
+                            onClick={() => dispatch(removeContact(contact.id))}
                             >delete</Button>}
                     </ContactsItem>
                 ))}
